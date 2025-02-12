@@ -1,9 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "export",
-  basePath: "/flashcards",
-  reactStrictMode: true,
+  output: 'export',
+  basePath: '/flashcards',
 };
 
 export default nextConfig;

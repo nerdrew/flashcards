@@ -100,6 +100,7 @@ export default function Home() {
   }, [])
 
   React.useEffect(() => {
+    window.scrollTo(0,1)
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
@@ -123,19 +124,28 @@ export default function Home() {
       </div>
 
       <div className="num-pad">
-        <Button variant="outlined" onClick={() => numKey(7)}>{7}</Button>
-        <Button variant="outlined" onClick={() => numKey(8)}>{8}</Button>
-        <Button variant="outlined" onClick={() => numKey(9)}>{9}</Button>
-        <Button variant="outlined" onClick={() => numKey(4)}>{4}</Button>
-        <Button variant="outlined" onClick={() => numKey(5)}>{5}</Button>
-        <Button variant="outlined" onClick={() => numKey(6)}>{6}</Button>
-        <Button variant="outlined" onClick={() => numKey(1)}>{1}</Button>
-        <Button variant="outlined" onClick={() => numKey(2)}>{2}</Button>
-        <Button variant="outlined" onClick={() => numKey(3)}>{3}</Button>
-        <Button variant="outlined" onClick={() => numKey(0)}>{0}</Button>
-        <br/>
-        <Button variant="outlined" onClick={() => check()}>Guess!</Button>
-        <Button variant="outlined" onClick={() => clear()}>Clear!</Button>
+        <div>
+        <Button size="large" variant="outlined" onClick={() => numKey(7)}>{7}</Button>
+        <Button size="large" variant="outlined" onClick={() => numKey(8)}>{8}</Button>
+        <Button size="large" variant="outlined" onClick={() => numKey(9)}>{9}</Button>
+        </div>
+        <div>
+        <Button size="large" variant="outlined" onClick={() => numKey(4)}>{4}</Button>
+        <Button size="large" variant="outlined" onClick={() => numKey(5)}>{5}</Button>
+        <Button size="large" variant="outlined" onClick={() => numKey(6)}>{6}</Button>
+        </div>
+        <div>
+        <Button size="large" variant="outlined" onClick={() => numKey(1)}>{1}</Button>
+        <Button size="large" variant="outlined" onClick={() => numKey(2)}>{2}</Button>
+        <Button size="large" variant="outlined" onClick={() => numKey(3)}>{3}</Button>
+        </div>
+        <div>
+        <Button size="large" variant="outlined" onClick={() => numKey(0)}>{0}</Button>
+        </div>
+        <div>
+        <Button size="large" variant="outlined" onClick={() => check()}>Guess!</Button>
+        <Button size="large" variant="outlined" onClick={() => clear()}>Clear!</Button>
+        </div>
       </div>
     </div>
   );
