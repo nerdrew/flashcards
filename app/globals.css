@@ -19,3 +19,60 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+div.App {
+  max-width: 190pt;
+}
+
+div.ten-frame {
+}
+
+.number {
+  font-size: 3em;
+  text-align: center;
+}
+
+.guess {
+  min-height: 1.5em;
+  font-size: 2em;
+  text-align: center;
+}
+
+.wrong {
+  color: red;
+}
+
+.correct {
+  color: green;
+}
+
+div.row {
+  padding: 0 10% 0 10%;
+  text-align: center;
+}
+
+div.row.ten {
+  margin-bottom: 2%;
+}
+
+div.box {
+  display: inline-block;
+  width: 10%;
+  aspect-ratio: 1;
+  border: 1px solid;
+  border-color: var(--foreground);
+  /*background: red;*/
+  /*margin: 1%;*/
+  /*padding: 1%;*/
+}
+
+div.circle {
+  background: green;
+  border-radius: 50%;
+  height: 100%;
+  width: 100%;
+}
+
+.num-pad {
+  text-align: center;
+}

@@ -1,101 +1,139 @@
-import Image from "next/image";
+'use client';
+
+import React from 'react';
+import Button from '@mui/material/Button';
+
+function Box(props: { filled: boolean }) {
+  if (props.filled) {
+    return (<div className="box"><div className="circle" /></div>);
+  } else {
+    return (<div className="box" />);
+  }
+}
+
+function TenFrame(props: { n: number }) {
+  const COLS = 10
+  const rows = Math.floor(props.n / COLS);
+  const filled = props.n % COLS;
+  const unfilled = filled == 0 ? 0 : COLS - filled;
+  return (
+    <div className="ten-frame">
+      <div className="number">{ props.n }</div>
+      {
+        [...Array(rows)].map((_item, i) => {
+          const className = i > 0 && i % 2 == 1 ? "row ten" : "row"
+          return (
+            <div key={i} className={className}>
+              {
+                [...Array(COLS)].map((_item, j) => (<Box key={j} filled={true} />))
+              }
+            </div>
+          )
+        })
+      }
+      <div className="row">
+        {
+          [...Array(filled)].map((_item, i) => (<Box key={i} filled={true} />))
+        }
+        {
+          [...Array(unfilled)].map((_item, i) => (<Box key={i} filled={false} />))
+        }
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [guess, setGuess] = React.useState('');
+  const [wrong, setWrong] = React.useState(false);
+  const [correct, setCorrect] = React.useState(false);
+  const [x, setX] = React.useState(0);
+  const [y, setY] = React.useState(0);
+  const [isClient, setClient] = React.useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  const check = async () => {
+    const g = parseInt(guess)
+
+    if (g == x + y) {
+      setWrong(false)
+      setCorrect(true)
+      setTimeout(() => {
+        setX(Math.floor(Math.random() * 20) + 1)
+        setY(Math.floor(Math.random() * 20) + 1)
+        setCorrect(false)
+      }, 1_000)
+    } else {
+      setWrong(true)
+    }
+
+    setGuess('')
+  }
+
+  const numKey = async (n: number) => {
+    setCorrect(false)
+    setWrong(false)
+    setGuess(`${guess}${n}`)
+  }
+  const clear = async () => {
+    setCorrect(false)
+    setWrong(false)
+    setGuess('')
+  }
+  const handleKeyDown = async (e: any) => {
+    console.log(`key=${e.key}`)
+    if (e.key === "Enter") {
+      check()
+    } else {
+      const n = parseInt(e.key)
+      if (!isNaN(n)) {
+        setGuess((guess) => `${guess}${n}`)
+        setWrong(false)
+      }
+    }
+  }
+
+  React.useEffect(() => {
+    setX(Math.floor(Math.random() * 20) + 1)
+    setY(Math.floor(Math.random() * 20) + 1)
+    setClient(true);
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [])
+
+  if (!isClient) {
+    return (<div/>)
+  }
+
+  return (
+    <div className="App">
+      <TenFrame n={x} />
+      <div className="number">+</div>
+      <TenFrame n={y} />
+      <div className="guess">
+        {guess !== '' && guess}
+        {correct && (<span className="correct">👌</span>)}
+        {wrong && (<span className="wrong">X</span>)}
+      </div>
+
+      <div className="num-pad">
+        <Button variant="outlined" onClick={() => numKey(7)}>{7}</Button>
+        <Button variant="outlined" onClick={() => numKey(8)}>{8}</Button>
+        <Button variant="outlined" onClick={() => numKey(9)}>{9}</Button>
+        <Button variant="outlined" onClick={() => numKey(4)}>{4}</Button>
+        <Button variant="outlined" onClick={() => numKey(5)}>{5}</Button>
+        <Button variant="outlined" onClick={() => numKey(6)}>{6}</Button>
+        <Button variant="outlined" onClick={() => numKey(1)}>{1}</Button>
+        <Button variant="outlined" onClick={() => numKey(2)}>{2}</Button>
+        <Button variant="outlined" onClick={() => numKey(3)}>{3}</Button>
+        <Button variant="outlined" onClick={() => numKey(0)}>{0}</Button>
+        <br/>
+        <Button variant="outlined" onClick={() => check()}>Guess!</Button>
+        <Button variant="outlined" onClick={() => clear()}>Clear!</Button>
+      </div>
     </div>
   );
 }
