@@ -51,7 +51,7 @@ export default function Home() {
   const [y, setY] = React.useState(0);
   const [isClient, setClient] = React.useState(false);
 
-  const check = async () => {
+  const check = React.useCallback(async () => {
     const g = parseInt(guess)
 
     if (g == x + y) {
@@ -67,7 +67,20 @@ export default function Home() {
     }
 
     setGuess('')
-  }
+  }, [guess, x, y])
+
+  const handleKeyDown = React.useCallback(async (e: KeyboardEvent) => {
+    console.log(`key=${e.key}`)
+    if (e.key === "Enter") {
+      check()
+    } else {
+      const n = parseInt(e.key)
+      if (!isNaN(n)) {
+        setGuess((guess) => `${guess}${n}`)
+        setWrong(false)
+      }
+    }
+  }, [check])
 
   const numKey = async (n: number) => {
     setCorrect(false)
@@ -79,30 +92,20 @@ export default function Home() {
     setWrong(false)
     setGuess('')
   }
-  const handleKeyDown = async (e: any) => {
-    console.log(`key=${e.key}`)
-    if (e.key === "Enter") {
-      check()
-    } else {
-      const n = parseInt(e.key)
-      if (!isNaN(n)) {
-        setGuess((guess) => `${guess}${n}`)
-        setWrong(false)
-      }
-    }
-  }
 
   React.useEffect(() => {
     setX(Math.floor(Math.random() * 20) + 1)
     setY(Math.floor(Math.random() * 20) + 1)
     setClient(true);
+  }, [])
 
+  React.useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [])
+  }, [handleKeyDown])
 
   if (!isClient) {
     return (<div/>)
