@@ -103,7 +103,7 @@ export default function Home() {
   const [y, setY] = React.useState(0);
   const [isClient, setClient] = React.useState(false);
 
-  const check = React.useCallback((newGuess?: string) => {
+  const check = React.useCallback((newGuess?: string, soft?: boolean) => {
     const g = parseInt(newGuess ? newGuess : guess)
     if (g == x + y) {
       setWrong(false)
@@ -114,7 +114,7 @@ export default function Home() {
         setCorrect(false)
         setGuess('')
       }, 1_000)
-    } else if (!newGuess) {
+    } else if (!soft) {
       setWrong(true)
       setGuess('')
     }
@@ -127,11 +127,12 @@ export default function Home() {
     setCorrect(false)
     setWrong(false)
     const newGuess = `${guess}${n}`
-    if (newGuess.length <= 2) {
+    if (newGuess.length > 2) {
       setGuess(newGuess)
-      check(newGuess)
+      check(newGuess, false)
     } else {
-      setGuess('')
+      setGuess(newGuess)
+      check(newGuess, true)
     }
   }, [guess, correct, check])
 
