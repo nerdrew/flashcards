@@ -26,7 +26,19 @@ div.App {
   height: 101vh;
 }
 
-div.ten-frame {
+.ten-frames {
+  display: inline-grid;
+  margin-top: 5%;
+  aspect-ratio: 1;
+  width: 50%;
+}
+
+.ten-frame {
+  margin-bottom: 2%;
+}
+
+.row {
+  text-align: center;
 }
 
 .number {
@@ -34,44 +46,42 @@ div.ten-frame {
   text-align: center;
 }
 
-.guess {
-  min-height: 1.5em;
-  font-size: 2em;
-  text-align: center;
-}
-
 .wrong {
   color: red;
 }
 
-.correct {
-  color: green;
-}
-
-div.row {
-  padding: 0 10% 0 10%;
-  text-align: center;
-}
-
-div.row.ten {
-  margin-bottom: 2%;
-}
-
-div.box {
+.box {
   display: inline-block;
-  width: 10%;
+  width: 17%;
   aspect-ratio: 1;
   border: 1px solid;
   border-color: var(--foreground);
 }
 
-div.circle {
-  background: green;
+.circle {
   border-radius: 50%;
-  height: 100%;
-  width: 100%;
+  margin: 2%;
+  height: 96%;
+  width: 96%;
 }
 
 .num-pad {
   text-align: center;
+  height: 50%;
+}
+
+.num-pad-row {
+  height: 20%;
+}
+
+.num-pad-button {
+  align-content: center;
+  border: 1px solid;
+  border-color: var(--foreground);
+  display: inline-block;
+  font-size: 2em;
+  height: 90%;
+  margin: 1%;
+  text-align: center;
+  width: 30%;
 }
