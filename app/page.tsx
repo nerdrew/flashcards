@@ -127,8 +127,12 @@ export default function Home() {
     setCorrect(false)
     setWrong(false)
     const newGuess = `${guess}${n}`
-    setGuess(newGuess)
-    check(newGuess)
+    if (newGuess.length <= 2) {
+      setGuess(newGuess)
+      check(newGuess)
+    } else {
+      setGuess('')
+    }
   }, [guess, correct, check])
 
   const handleKeyDown = React.useCallback((e: KeyboardEvent) => {
