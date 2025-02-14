@@ -62,14 +62,14 @@ div.App {
   aspect-ratio: 1;
   border: 1px solid var(--foreground);
   display: inline-block;
-  width: 17%;
+  padding: 1px;
+  width: 18%;
 }
 
 .circle {
+  aspect-ratio: 1;
   border-radius: 50%;
-  margin: 2%;
-  height: 96%;
-  width: 96%;
+  width: 100%;
 }
 
 .num-pad {
