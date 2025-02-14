@@ -5,31 +5,39 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --button-color: 0, 0, 0, 0.2;
+  --active-button-color: 0, 0, 0, 0.6;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --button-color: 255, 255, 255, 0.5;
+    --active-button-color: 255, 255, 255, 0.9;
   }
 }
 
 body {
-  color: var(--foreground);
   background: var(--background);
+  color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 div.App {
-  max-width: 400pt;
-  width: 100%;
   height: 101vh;
+  max-width: 432pt;
+  width: 100%;
 }
 
 .ten-frames {
+  aspect-ratio: 1;
   display: inline-grid;
   margin-top: 5%;
-  aspect-ratio: 1;
   width: 50%;
 }
 
@@ -51,11 +59,10 @@ div.App {
 }
 
 .box {
+  aspect-ratio: 1;
+  border: 1px solid var(--foreground);
   display: inline-block;
   width: 17%;
-  aspect-ratio: 1;
-  border: 1px solid;
-  border-color: var(--foreground);
 }
 
 .circle {
@@ -66,8 +73,9 @@ div.App {
 }
 
 .num-pad {
-  text-align: center;
   height: 50%;
+  text-align: center;
+  user-select: none;
 }
 
 .num-pad-row {
@@ -76,12 +84,20 @@ div.App {
 
 .num-pad-button {
   align-content: center;
-  border: 1px solid;
-  border-color: var(--foreground);
+  border-radius: 6px;
+  border: 1px solid var(--foreground);
+  box-shadow: 0 0 10px -1px rgb(var(--button-color));
+  cursor: pointer;
   display: inline-block;
   font-size: 2em;
+  font-weight: 600;
   height: 90%;
   margin: 1%;
   text-align: center;
+  touch-action: manipulation;
   width: 30%;
+}
+
+.num-pad-button:active {
+  box-shadow: 0 0 10px -1px rgba(var(--active-button-color));
 }

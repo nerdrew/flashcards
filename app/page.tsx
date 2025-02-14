@@ -45,9 +45,7 @@ function NumPad(props: { check: () => void, clear: () => void, numKey: (n: numbe
       </div>
       <div className="num-pad-row">
         <div className="num-pad-button" onClick={() => props.numKey(0)}>{0}</div>
-      </div>
-      <div className="num-pad-row">
-        <div className="num-pad-button" onClick={() => props.check()}>Answer!</div>
+        <div className="num-pad-button" onClick={() => props.check()}>Check</div>
         <div className="num-pad-button" onClick={() => props.clear()}>Clear</div>
       </div>
     </div>
@@ -109,8 +107,8 @@ export default function Home() {
       setWrong(false)
       setCorrect(true)
       setTimeout(() => {
-        setX(Math.floor(Math.random() * 20) + 1)
-        setY(Math.floor(Math.random() * 20) + 1)
+        setX(Math.ceil(Math.random() * 20))
+        setY(Math.ceil(Math.random() * 20))
         setCorrect(false)
         setGuess('')
       }, 1_000)
