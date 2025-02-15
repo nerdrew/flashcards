@@ -5,7 +5,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --button-color: 0, 0, 0, 0.2;
+  --button-color: 0, 0, 0, 0.1;
   --active-button-color: 0, 0, 0, 0.6;
 }
 
@@ -26,6 +26,8 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 div.App {
@@ -75,7 +77,6 @@ div.App {
 .num-pad {
   height: 50%;
   text-align: center;
-  user-select: none;
 }
 
 .num-pad-row {
