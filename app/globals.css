@@ -30,6 +30,33 @@ body {
   -webkit-user-select: none;
 }
 
+div.Menu {
+  max-width: 432pt;
+  width: 100%;
+}
+
+label {
+  font-size: 2em;
+  font-weight: 600;
+}
+
+input, select {
+  border-radius: 6px;
+  border: 1px solid var(--foreground);
+  font-weight: 600;
+  color: #171717;
+  margin: 2%;
+}
+
+input {
+  width: 2em;
+}
+
+select {
+  font-size: 2em;
+  margin-bottom: 10%;
+}
+
 div.App {
   height: 101vh;
   max-width: 432pt;

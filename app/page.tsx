@@ -25,6 +25,62 @@ const COLORS = [
   "plum",
 ]
 
+interface Operation {
+  symbol: string;
+  check: (x: number, y: number, z: number) => boolean;
+}
+
+const ADD = {
+  symbol: "+",
+  check: (x: number, y: number, z: number) => x + y === z,
+};
+
+const SUB = {
+  symbol: "-",
+  check: (x: number, y: number, z: number) => x - y === z,
+  // TODO add default max?
+};
+
+function Menu(props: { op: Operation, setOp: (op: Operation) => void, max: number, setMax: (max: number) => void, setShowMenu: (_: boolean) => void }) {
+  const save = (formData: FormData) => {
+    // console.log(`formData=${JSON.stringify(Array.from(formData.entries()))}`)
+
+    if (formData.get("max") !== "") {
+      const max = parseInt(formData.get("max")! as string)
+      props.setMax(max)
+    }
+
+    const op = formData.get("op")! as string
+    if (op === ADD.symbol) {
+      props.setOp(ADD);
+    } else if (op === SUB.symbol) {
+      props.setOp(SUB);
+    } else {
+      console.log(`unexpected op=${op}`);
+    }
+    props.setShowMenu(false);
+  }
+
+  return (
+    <div className="Menu">
+      <form action={save}>
+        <label>
+          Max: <input type="text" inputMode="decimal" maxLength={2} name="max" placeholder={props.max.toString()} />
+        </label>
+        <br/>
+        <select name="op" id="operation-select" defaultValue={props.op.symbol}>
+          <option value={ADD.symbol}>{ADD.symbol}</option>
+          <option value={SUB.symbol}>{SUB.symbol}</option>
+        </select>
+        <br/>
+        <button className="num-pad-button" type="submit">Save</button>
+      </form>
+      <br/>
+      <button className="num-pad-button" type="submit" onClick={() => props.setShowMenu(false)}>Cancel</button>
+    </div>
+  )
+}
+
 function NumPad(props: { check: () => void, clear: () => void, numKey: (n: number) => void }) {
   return (
     <div className="num-pad">
@@ -100,15 +156,29 @@ export default function Home() {
   const [x, setX] = React.useState(0);
   const [y, setY] = React.useState(0);
   const [isClient, setClient] = React.useState(false);
+  const [showMenu, setShowMenu] = React.useState(false);
+  const [max, setMax] = React.useState(20);
+  const [op, setOp] = React.useState(ADD);
+
+  const newNumbers = React.useCallback(() => {
+    const x = Math.ceil(Math.random() * max)
+    const y = Math.ceil(Math.random() * max)
+    if (op === SUB && y > x) {
+      setX(y)
+      setY(x)
+    } else {
+      setX(x)
+      setY(y)
+    }
+  }, [max, op])
 
   const check = React.useCallback((newGuess?: string, soft?: boolean) => {
     const g = parseInt(newGuess ? newGuess : guess)
-    if (g == x + y) {
+    if (op.check(x, y, g)) {
       setWrong(false)
       setCorrect(true)
       setTimeout(() => {
-        setX(Math.ceil(Math.random() * 20))
-        setY(Math.ceil(Math.random() * 20))
+        newNumbers()
         setCorrect(false)
         setGuess('')
       }, 1_000)
@@ -116,7 +186,7 @@ export default function Home() {
       setWrong(true)
       setGuess('')
     }
-  }, [guess, x, y])
+  }, [guess, x, y, op, newNumbers])
 
   const updateGuess = React.useCallback((n: number) => {
     if (correct) {
@@ -156,29 +226,38 @@ export default function Home() {
   }
 
   React.useEffect(() => {
-    setX(Math.ceil(Math.random() * 20))
-    setY(Math.ceil(Math.random() * 20))
-    setClient(true);
-  }, [])
+    newNumbers()
+    setClient(true)
+  }, [newNumbers])
 
   React.useEffect(() => {
-    window.scrollTo(0,1)
-    window.addEventListener('keydown', handleKeyDown);
+    if (!showMenu) {
+      window.addEventListener('keydown', handleKeyDown);
 
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [handleKeyDown])
+      return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [handleKeyDown, showMenu])
 
   if (!isClient) {
     return (<div/>)
   }
 
+  if (showMenu) {
+    return (
+      <Menu op={op} setOp={setOp} max={max} setMax={setMax} setShowMenu={setShowMenu} />
+    )
+  }
+
   return (
     <div className="App">
-      <TenFrames n={x} />
-      <TenFrames n={y} />
-      <div className="number">{x} + {y} = {guess === '' ? "?" : guess}
+      <div onDoubleClick={() => setShowMenu(true)}>
+        <TenFrames n={x} />
+        <TenFrames n={y} />
+      </div>
+      <div className="number">
+        {x} {op.symbol} {y} = {guess === '' ? "?" : guess}
         {correct && " 👌"}
         {wrong && (<span className="wrong">X</span>)}
       </div>
