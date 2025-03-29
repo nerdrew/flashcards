@@ -194,7 +194,7 @@ export default function Home() {
     }
     setCorrect(false)
     setWrong(false)
-    const newGuess = `${guess}${n}`
+    const newGuess = guess === "0" ? `${n}` : `${guess}${n}`;
     if (newGuess.length > 2) {
       setGuess(newGuess)
       check(newGuess, false)
